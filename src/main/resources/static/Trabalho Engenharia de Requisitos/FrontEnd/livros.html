@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca – Livros</title>
+  <link rel="stylesheet" href="livros.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+
+ 
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+    <header class="sidebar__header">
+      <span class="logo__icon" aria-hidden="true">📚</span>
+      <hgroup>
+        <h2 class="logo__name">Biblioteca</h2>
+        <p  class="logo__sub">Sistema de Gestão</p>
+      </hgroup>
+    </header>
+
+    <nav aria-label="Navegação principal">
+      <ul class="nav__list" role="list">
+        <li><a href="dashboard.html" class="nav__link"><span aria-hidden="true">🏠</span> Dashboard</a></li>
+        <li><a href="livros.html" class="nav__link nav__link--active" aria-current="page"><span aria-hidden="true">📖</span> Livros</a></li>
+        <li><a href="usuarios.html" class="nav__link"><span aria-hidden="true">👥</span> Usuários</a></li>
+        <li><a href="emprestimos.html" class="nav__link"><span aria-hidden="true">🤝</span> Empréstimos</a></li>
+        <li><a href="devolucoes.html" class="nav__link"><span aria-hidden="true">↩️</span> Devoluções</a></li>
+        <li><a href="multas.html" class="nav__link"><span aria-hidden="true">⚠️</span> Multas</a></li>
+
+      </ul>
+    </nav>
+
+    <footer class="sidebar__footer">
+      <a href="login.html" class="nav__link nav__link--sair"><span aria-hidden="true">🚪</span> Sair</a>
+    </footer>
+  </aside>
+
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+
+  <main class="main" id="main">
+
+    
+    <header class="topbar">
+      <button class="btn-hamburger" id="btn-menu" type="button"
+              aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <hgroup class="topbar__heading">
+        <h1>Livros</h1>
+        <p>Gerencie o acervo da biblioteca</p>
+      </hgroup>
+
+      <address class="user-card" tabindex="0" aria-label="Usuário: Administrador">
+        <span class="user-card__avatar" aria-hidden="true">👤</span>
+        <strong class="user-card__name">Administrador</strong>
+        <span aria-hidden="true">▾</span>
+      </address>
+    </header>
+
+    
+    <section class="toolbar" aria-label="Ferramentas de busca e filtro">
+
+      <search class="toolbar__search" aria-label="Buscar livros">
+        <label for="busca" class="sr-only">Buscar por título, autor ou ISBN</label>
+        <span class="search__wrapper">
+          <span class="search__icon" aria-hidden="true">🔍</span>
+          <input type="search" id="busca" name="q"
+                 placeholder="Buscar por título, autor ou ISBN..."
+                 autocomplete="off" />
+        </span>
+      </search>
+
+      <div class="toolbar__filters" role="group" aria-label="Filtros">
+
+        <span class="select__wrapper">
+          <label for="filtro-cat" class="sr-only">Filtrar por categoria</label>
+          <select id="filtro-cat">
+            <option value="">Todas as categorias</option>
+            <option value="romance">Romance</option>
+            <option value="fantasia">Fantasia</option>
+            <option value="ficcao">Ficção Científica</option>
+            <option value="programacao">Programação</option>
+            <option value="negocios">Negócios &amp; Gestão</option>
+            <option value="design">Design &amp; UI</option>
+            <option value="recrutamento">Recrutamento</option>
+            <option value="fabula">Fábula</option>
+          </select>
+          <span class="select__arrow" aria-hidden="true">▾</span>
+        </span>
+
+        <span class="select__wrapper">
+          <label for="filtro-status" class="sr-only">Filtrar por status</label>
+          <select id="filtro-status">
+            <option value="">Todos os status</option>
+            <option value="disponivel">Disponível</option>
+            <option value="emprestado">Emprestado</option>
+          </select>
+          <span class="select__arrow" aria-hidden="true">▾</span>
+        </span>
+
+        
+        <div class="view-toggle" role="group" aria-label="Modo de visualização">
+          <button type="button" class="view-btn view-btn--active" id="btn-cards"
+                  aria-pressed="true" title="Visualização em cards">⊞</button>
+          <button type="button" class="view-btn" id="btn-table"
+                  aria-pressed="false" title="Visualização em tabela">☰</button>
+        </div>
+      </div>
+
+    </section>
+
+   
+    <p class="results-count" id="results-count" aria-live="polite" aria-atomic="true"></p>
+
+    
+    <section id="view-cards" aria-label="Livros em cards">
+      <ol class="book-grid" id="book-grid" role="list">
+      </ol>
+      <p class="empty-msg" id="empty-cards" hidden>Nenhum livro encontrado.</p>
+    </section>
+
+    
+    <section id="view-table" hidden aria-label="Livros em tabela">
+      <div class="table-scroll" role="region" tabindex="0" aria-label="Tabela de livros">
+        <table class="data-table">
+          <caption class="sr-only">Acervo de livros com avaliação, categoria e status</caption>
+          <thead>
+            <tr>
+              <th scope="col">Livro</th>
+              <th scope="col">Autor</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">Avaliação</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="th-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="empty-table" hidden>Nenhum livro encontrado.</p>
+    </section>
+
+  </main>
+
+  
+  <button class="fab" id="btn-fab" type="button" aria-label="Adicionar novo livro">
+    <span aria-hidden="true">+</span>
+  </button>
+
+  <dialog class="modal" id="modal" aria-modal="true" aria-labelledby="modal-title">
+    <header class="modal__header">
+      <h2 id="modal-title">Adicionar Livro</h2>
+      <button type="button" class="modal__close" id="modal-close" aria-label="Fechar modal">✕</button>
+    </header>
+
+    <form id="form-livro" class="book-form" novalidate method="dialog"
+          aria-label="Formulário do livro">
+
+      
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Identificação</legend>
+        <div class="form-grid form-grid--2">
+
+          <div class="field">
+            <label for="f-titulo">Título <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="f-titulo" name="titulo"
+                   placeholder="Ex: Dom Casmurro" required autocomplete="off" />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <label for="f-autor">Nome do autor <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="f-autor" name="autor"
+                   placeholder="Ex: Machado de Assis" required autocomplete="off" />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <label for="f-isbn">ISBN</label>
+            <input type="text" id="f-isbn" name="isbn"
+                   placeholder="Ex: 978-85-359-0277-5" autocomplete="off" />
+          </div>
+
+          <div class="field">
+            <label for="f-categoria">Categoria <span class="required" aria-hidden="true">*</span></label>
+            <span class="select__wrapper select__wrapper--field">
+              <select id="f-categoria" name="categoria" required>
+                <option value="">Selecione...</option>
+                <option value="romance">Romance</option>
+                <option value="fantasia">Fantasia</option>
+                <option value="ficcao">Ficção Científica</option>
+                <option value="programacao">Programação</option>
+                <option value="negocios">Negócios &amp; Gestão</option>
+                <option value="design">Design &amp; UI</option>
+                <option value="recrutamento">Recrutamento</option>
+                <option value="fabula">Fábula</option>
+              </select>
+              <span class="select__arrow" aria-hidden="true">▾</span>
+            </span>
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Publicação</legend>
+        <div class="form-grid form-grid--3">
+
+          <div class="field">
+            <label for="f-ano">Ano de publicação <span class="required" aria-hidden="true">*</span></label>
+            <input type="number" id="f-ano" name="ano"
+                   min="1000" max="2099" placeholder="Ex: 1899" required />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <label for="f-edicao">Edição <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="f-edicao" name="edicao"
+                   placeholder="Ex: 3ª edição" required autocomplete="off" />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+
+
+        </div>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Detalhes físicos</legend>
+        <div class="form-grid form-grid--3">
+
+          <div class="field">
+            <label for="f-paginas">Nº de páginas <span class="required" aria-hidden="true">*</span></label>
+            <input type="number" id="f-paginas" name="paginas"
+                   min="1" placeholder="Ex: 320" required />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+
+          <div class="field">
+            <label for="f-avaliacao">Avaliação (1–5) <span class="required" aria-hidden="true">*</span></label>
+            <input type="number" id="f-avaliacao" name="avaliacao"
+                   min="1" max="5" step="0.5" placeholder="Ex: 4.5" required />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Status</legend>
+        <div class="form-grid form-grid--2">
+
+          <div class="field">
+            <label for="f-status">Status <span class="required" aria-hidden="true">*</span></label>
+            <span class="select__wrapper select__wrapper--field">
+              <select id="f-status" name="status" required>
+                <option value="">Selecione...</option>
+                <option value="disponivel">Disponível</option>
+                <option value="emprestado">Emprestado</option>
+              </select>
+              <span class="select__arrow" aria-hidden="true">▾</span>
+            </span>
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <label for="f-atribuido">Atribuído a <span class="optional">(opcional)</span></label>
+            <input type="text" id="f-atribuido" name="atribuido"
+                   placeholder="Nome do responsável" autocomplete="off" />
+          </div>
+
+        </div>
+      </fieldset>
+
+      
+      <footer class="form-footer">
+        <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+        <button type="submit"  class="btn-salvar"  id="btn-salvar">Salvar Livro</button>
+      </footer>
+
+    </form>
+  </dialog>
+
+  
+  <dialog class="modal modal--sm" id="modal-excluir" aria-modal="true" aria-labelledby="excluir-title">
+    <header class="modal__header">
+      <h2 id="excluir-title">Excluir livro</h2>
+      <button type="button" class="modal__close" id="excluir-close" aria-label="Fechar">✕</button>
+    </header>
+    <p class="modal__body">
+      Tem certeza que deseja excluir <strong id="excluir-nome"></strong>?
+      <br><span style="font-size:12px;color:var(--text-3)">Essa ação não pode ser desfeita.</span>
+    </p>
+    <footer class="form-footer">
+      <button type="button" class="btn-cancelar" id="excluir-cancelar">Cancelar</button>
+      <button type="button" class="btn-excluir-confirm" id="excluir-confirmar">Excluir</button>
+    </footer>
+  </dialog>
+
+  
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="toast__icon" aria-hidden="true" id="toast-icon">✓</span>
+    <span id="toast-msg">Livro adicionado com sucesso!</span>
+  </div>
+
+  <script src="livros.js"></script>
+</body>
+</html>

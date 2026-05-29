@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Biblioteca – Multas</title>
+    <link rel="stylesheet" href="multas.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+
+
+<aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+    <header class="sidebar__header">
+        <span class="logo__icon" aria-hidden="true">📚</span>
+        <hgroup>
+            <h2 class="logo__name">Biblioteca</h2>
+            <p  class="logo__sub">Sistema de Gestão</p>
+        </hgroup>
+    </header>
+
+    <nav aria-label="Navegação principal">
+        <ul class="nav__list" role="list">
+        <li><a href="dashboard.html" class="nav__link"><span aria-hidden="true">🏠</span> Dashboard</a></li>
+        <li><a href="livros.html" class="nav__link"><span aria-hidden="true">📖</span> Livros</a></li>
+        <li><a href="usuarios.html" class="nav__link"><span aria-hidden="true">👥</span> Usuários</a></li>
+        <li><a href="emprestimos.html" class="nav__link"><span aria-hidden="true">🤝</span> Empréstimos</a></li>
+        <li><a href="devolucoes.html" class="nav__link"><span aria-hidden="true">↩️</span> Devoluções</a></li>
+        <li><a href="multas.html" class="nav__link nav__link--active" aria-current="page"><span aria-hidden="true">⚠️</span> Multas</a></li>
+        </ul>
+    </nav>
+
+    <footer class="sidebar__footer">
+      <a href="login.html" class="nav__link nav__link--sair"><span aria-hidden="true">🚪</span> Sair</a>
+    </footer>
+</aside>
+
+<span class="overlay" id="overlay" aria-hidden="true"></span>
+
+
+<main class="main" id="main">
+
+
+    <header class="topbar">
+        <button class="btn-hamburger" id="btn-menu" type="button"
+                aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <hgroup class="topbar__heading">
+            <h1>Multas</h1>
+            <p>Bem-vindo(a) de volta!</p>
+        </hgroup>
+
+        <search class="topbar__search" aria-label="Buscar">
+            <label for="busca-top" class="sr-only">Buscar multas</label>
+            <span class="search__wrapper">
+          <input type="search" id="busca-top" placeholder="Buscar livros, usuários..." autocomplete="off" />
+          <span class="search__icon" aria-hidden="true">🔍</span>
+        </span>
+        </search>
+
+        <address class="user-card" tabindex="0" aria-label="Usuário: Administrador">
+            <span class="user-card__avatar" aria-hidden="true">👤</span>
+            <span class="user-card__info">
+          <strong>Administrador</strong>
+          <span>admin@biblioteca.com</span>
+        </span>
+            <span aria-hidden="true">▾</span>
+        </address>
+    </header>
+
+
+    <section class="metrics" aria-label="Indicadores de multas">
+
+        <article class="metric metric--red">
+            <span class="metric__icon" aria-hidden="true">⚠️</span>
+            <footer class="metric__body">
+                <p class="metric__label">Multas em Aberto</p>
+                <strong class="metric__value" id="m-aberto">0</strong>
+                <p class="metric__sub">Pendentes de pagamento</p>
+            </footer>
+            <svg class="metric__spark" aria-hidden="true" viewBox="0 0 80 30" preserveAspectRatio="none">
+                <polyline points="0,20 15,25 30,15 45,22 60,10 75,18" fill="none" stroke="#ef4444" stroke-width="2"/>
+            </svg>
+        </article>
+
+        <article class="metric metric--orange">
+            <span class="metric__icon" aria-hidden="true">⏳</span>
+            <footer class="metric__body">
+                <p class="metric__label">Parcialmente Pagas</p>
+                <strong class="metric__value" id="m-parcial">0</strong>
+                <p class="metric__sub">Pagamento incompleto</p>
+            </footer>
+            <svg class="metric__spark" aria-hidden="true" viewBox="0 0 80 30" preserveAspectRatio="none">
+                <polyline points="0,22 15,16 30,20 45,10 60,15 75,8" fill="none" stroke="#f97316" stroke-width="2"/>
+            </svg>
+        </article>
+
+        <article class="metric metric--green">
+            <span class="metric__icon" aria-hidden="true">✅</span>
+            <footer class="metric__body">
+                <p class="metric__label">Total Recebido</p>
+                <strong class="metric__value" id="m-recebido">R$ 0,00</strong>
+                <p class="metric__sub">Multas quitadas</p>
+            </footer>
+            <svg class="metric__spark" aria-hidden="true" viewBox="0 0 80 30" preserveAspectRatio="none">
+                <polyline points="0,25 15,18 30,22 45,12 60,16 75,6" fill="none" stroke="#22c55e" stroke-width="2"/>
+            </svg>
+        </article>
+
+        <article class="metric metric--purple">
+            <span class="metric__icon" aria-hidden="true">💰</span>
+            <footer class="metric__body">
+                <p class="metric__label">Total Geral</p>
+                <strong class="metric__value" id="m-total">R$ 0,00</strong>
+                <p class="metric__sub">Valor total gerado</p>
+            </footer>
+            <svg class="metric__spark" aria-hidden="true" viewBox="0 0 80 30" preserveAspectRatio="none">
+                <polyline points="0,20 15,14 30,18 45,8 60,12 75,4" fill="none" stroke="#a855f7" stroke-width="2"/>
+            </svg>
+        </article>
+
+    </section>
+
+
+    <section class="content-row" aria-label="Conteúdo principal">
+
+
+        <article class="card card--wide">
+            <header class="card__header">
+                <h2>Multas Registradas</h2>
+                <nav class="card__filters" role="group" aria-label="Filtros de multa">
+            <span class="select__wrapper">
+              <label for="filtro-status" class="sr-only">Filtrar por status</label>
+              <select id="filtro-status">
+                <option value="">Todos os status</option>
+                <option value="aberto">Em aberto</option>
+                <option value="parcial">Parcial</option>
+                <option value="pago">Quitado</option>
+              </select>
+              <span class="select__arrow" aria-hidden="true">▾</span>
+            </span>
+                    <span class="select__wrapper">
+              <label for="filtro-ord" class="sr-only">Ordenar</label>
+              <select id="filtro-ord">
+                <option value="valor-desc">Maior valor</option>
+                <option value="dias-desc">Mais dias</option>
+                <option value="data-desc">Mais recente</option>
+              </select>
+              <span class="select__arrow" aria-hidden="true">▾</span>
+            </span>
+                </nav>
+            </header>
+
+            <figure class="table-scroll" role="region" aria-label="Tabela de multas" tabindex="0">
+                <table class="data-table" id="tabela-multas">
+                    <caption class="sr-only">Lista de multas com usuário, livro, dias, valor e status</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Usuário</th>
+                        <th scope="col">Livro</th>
+                        <th scope="col">Dias Atrasados</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Pago</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="th-right">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-multas"></tbody>
+                </table>
+            </figure>
+
+            <p class="empty-msg" id="empty-tabela" hidden>Nenhuma multa encontrada.</p>
+        </article>
+
+
+        <aside class="side-col" aria-label="Resumo e alertas">
+
+            <article class="card">
+                <header class="card__header">
+                    <h2>Taxa de Recebimento</h2>
+                    <strong id="prog-pct" class="pct-label">0%</strong>
+                </header>
+                <span class="prog-track" role="progressbar"
+                      aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                      aria-label="Percentual de multas recebidas" id="prog-track">
+            <span class="prog-fill" id="prog-fill"></span>
+          </span>
+                <ul class="prog-legend" role="list">
+                    <li><span class="prog-dot prog-dot--green"></span><span id="prog-pago-txt">R$ 0,00 recebido</span></li>
+                    <li><span class="prog-dot prog-dot--red"></span><span id="prog-aberto-txt">R$ 0,00 em aberto</span></li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <header class="card__header">
+                    <h2>⚠️ Maiores Devedores</h2>
+                </header>
+                <ol class="top-list" id="top-devedores" role="list"></ol>
+            </article>
+
+
+            <nav class="card" aria-label="Ações rápidas">
+                <header class="card__header">
+                    <h2>Ações Rápidas</h2>
+                </header>
+                <ul class="acoes-grid" role="list">
+                    <li>
+                        <button type="button" class="acao-btn" onclick="document.getElementById('filtro-status').value='aberto';document.getElementById('filtro-status').dispatchEvent(new Event('change'))">
+                            <span class="acao-btn__icon acao-btn__icon--red" aria-hidden="true">🔴</span>
+                            <span class="acao-btn__label">Ver em aberto</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="acao-btn" onclick="document.getElementById('filtro-status').value='';document.getElementById('filtro-status').dispatchEvent(new Event('change'))">
+                            <span class="acao-btn__icon acao-btn__icon--purple" aria-hidden="true">📋</span>
+                            <span class="acao-btn__label">Ver todas</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="acao-btn" onclick="document.getElementById('filtro-ord').value='valor-desc';document.getElementById('filtro-ord').dispatchEvent(new Event('change'))">
+                            <span class="acao-btn__icon acao-btn__icon--orange" aria-hidden="true">💸</span>
+                            <span class="acao-btn__label">Maior valor</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="acao-btn" onclick="document.getElementById('filtro-status').value='pago';document.getElementById('filtro-status').dispatchEvent(new Event('change'))">
+                            <span class="acao-btn__icon acao-btn__icon--green" aria-hidden="true">✅</span>
+                            <span class="acao-btn__label">Quitadas</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+        </aside>
+
+    </section>
+
+</main>
+
+
+<dialog class="modal" id="modal" aria-modal="true" aria-labelledby="modal-title">
+    <header class="modal__header">
+        <h2 id="modal-title">Registrar Pagamento</h2>
+        <button type="button" class="modal__close" id="modal-close" aria-label="Fechar">✕</button>
+    </header>
+
+    <figure class="modal__resumo" id="modal-resumo" aria-label="Multa selecionada">
+        <span class="resumo__cover" id="resumo-cover" aria-hidden="true"></span>
+        <figcaption>
+            <strong id="resumo-livro"></strong>
+            <span   id="resumo-usuario"></span>
+            <span   id="resumo-dias"></span>
+        </figcaption>
+        <strong class="resumo__valor" id="resumo-valor"></strong>
+    </figure>
+
+    <form id="form-pagamento" class="modal__form" novalidate aria-label="Formulário de pagamento">
+
+        <fieldset class="form-fieldset">
+            <legend class="form-legend">Pagamento</legend>
+
+            <section class="form-grid form-grid--2">
+                <p class="field">
+                    <label for="f-valor-pago">Valor pago (R$) <span class="required" aria-hidden="true">*</span></label>
+                    <span class="input-prefix__wrapper">
+              <span class="input-prefix" aria-hidden="true">R$</span>
+              <input type="number" id="f-valor-pago" name="valor_pago"
+                     min="0.01" step="0.01" placeholder="0,00" required />
+            </span>
+                    <span class="field__error" role="alert" aria-live="polite"></span>
+                </p>
+
+                <p class="field">
+                    <label for="f-data-pag">Data do pagamento <span class="required" aria-hidden="true">*</span></label>
+                    <input type="date" id="f-data-pag" name="data_pagamento" required />
+                    <span class="field__error" role="alert" aria-live="polite"></span>
+                </p>
+            </section>
+
+            <p class="field">
+                <label for="f-metodo">Método</label>
+                <span class="select__wrapper select__wrapper--field">
+            <select id="f-metodo" name="metodo">
+              <option value="dinheiro">💵 Dinheiro</option>
+              <option value="pix">📱 PIX</option>
+              <option value="cartao">💳 Cartão</option>
+              <option value="transferencia">🏦 Transferência</option>
+            </select>
+            <span class="select__arrow" aria-hidden="true">▾</span>
+          </span>
+            </p>
+
+            <p class="field">
+                <label for="f-obs">Observação <span class="optional">(opcional)</span></label>
+                <textarea id="f-obs" rows="2" placeholder="Ex: Pago em espécie..."></textarea>
+            </p>
+        </fieldset>
+
+        <aside class="pag-resumo" id="pag-resumo" aria-label="Resumo financeiro">
+            <dl>
+                <dt>Total da multa</dt>  <dd id="pr-total">—</dd>
+                <dt>Já pago</dt>         <dd id="pr-pago">—</dd>
+                <dt>Pagando agora</dt>   <dd id="pr-agora">—</dd>
+                <dt>Saldo restante</dt>  <dd id="pr-restante" class="pr-destaque">—</dd>
+            </dl>
+        </aside>
+
+        <footer class="form-footer">
+            <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+            <button type="submit" class="btn-salvar">💰 Registrar Pagamento</button>
+        </footer>
+
+    </form>
+</dialog>
+
+
+<dialog class="modal modal--sm" id="modal-detalhe" aria-modal="true" aria-labelledby="det-title">
+    <header class="modal__header">
+        <h2 id="det-title">Detalhes da Multa</h2>
+        <button type="button" class="modal__close" id="det-close" aria-label="Fechar">✕</button>
+    </header>
+    <section class="modal__det-body" id="det-body" aria-label="Detalhes"></section>
+</dialog>
+
+
+<output id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="toast__icon" id="toast-icon" aria-hidden="true">✓</span>
+    <span id="toast-msg"></span>
+</output>
+
+<script src="multas.js"></script>
+</body>
+</html>

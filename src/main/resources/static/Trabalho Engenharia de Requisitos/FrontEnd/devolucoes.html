@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Biblioteca – Devoluções</title>
+    <link rel="stylesheet" href="devolucoes.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+
+
+<aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+    <header class="sidebar__header">
+        <span class="logo__icon" aria-hidden="true">📚</span>
+        <hgroup>
+            <h2 class="logo__name">Biblioteca</h2>
+            <p  class="logo__sub">Sistema de Gestão</p>
+        </hgroup>
+    </header>
+
+    <nav aria-label="Navegação principal">
+        <ul class="nav__list" role="list">
+            <li><a href="dashboard.html" class="nav__link"><span aria-hidden="true">🏠</span> Dashboard</a></li>
+            <li><a href="livros.html" class="nav__link"><span aria-hidden="true">📖</span> Livros</a></li>
+            <li><a href="usuarios.html" class="nav__link"><span aria-hidden="true">👥</span> Usuários</a></li>
+            <li><a href="emprestimos.html" class="nav__link"><span aria-hidden="true">🤝</span> Empréstimos</a></li>
+            <li><a href="devolucoes.html" class="nav__link nav__link--active" aria-current="page"><span aria-hidden="true">↩️</span> Devoluções</a></li>
+            <li><a href="multas.html" class="nav__link"><span aria-hidden="true">⚠️</span> Multas</a></li>
+
+        </ul>
+    </nav>
+
+    <footer class="sidebar__footer">
+        <a href="login.html" class="nav__link nav__link--sair"><span aria-hidden="true">🚪</span> Sair</a>
+    </footer>
+</aside>
+
+<span class="overlay" id="overlay" aria-hidden="true"></span>
+
+
+<main class="main" id="main">
+
+    
+    <header class="topbar">
+        <button class="btn-hamburger" id="btn-menu" type="button"
+                aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <hgroup class="topbar__heading">
+            <h1>Devoluções</h1>
+            <p>Registre e gerencie as devoluções de livros</p>
+        </hgroup>
+        <address class="user-card" tabindex="0" aria-label="Usuário: Administrador">
+            <span class="user-card__avatar" aria-hidden="true">👤</span>
+            <strong class="user-card__name">Administrador</strong>
+            <span aria-hidden="true">▾</span>
+        </address>
+    </header>
+
+    
+    <section class="metrics" aria-label="Métricas de devoluções">
+
+        <article class="metric metric--orange">
+            <span class="metric__icon" aria-hidden="true">📖</span>
+            <footer class="metric__body">
+                <h3>Em Aberto</h3>
+                <strong id="m-abertos">0</strong>
+                <p>Aguardando devolução</p>
+            </footer>
+        </article>
+
+        <article class="metric metric--red">
+            <span class="metric__icon" aria-hidden="true">⏰</span>
+            <footer class="metric__body">
+                <h3>Atrasados</h3>
+                <strong id="m-atrasados">0</strong>
+                <p>Prazo vencido</p>
+            </footer>
+        </article>
+
+        <article class="metric metric--yellow">
+            <span class="metric__icon" aria-hidden="true">💰</span>
+            <footer class="metric__body">
+                <h3>Multas Ativas</h3>
+                <strong id="m-multas">R$ 0,00</strong>
+                <p>Total acumulado</p>
+            </footer>
+        </article>
+
+        <article class="metric metric--green">
+            <span class="metric__icon" aria-hidden="true">✅</span>
+            <footer class="metric__body">
+                <h3>Devolvidos Hoje</h3>
+                <strong id="m-hoje">0</strong>
+                <p>Registrados hoje</p>
+            </footer>
+        </article>
+
+    </section>
+
+    
+    <section id="alertas-section" class="alertas-section" aria-label="Alertas de atraso" hidden>
+        <header class="alertas-section__header">
+            <span class="alertas-section__icon" aria-hidden="true">🚨</span>
+            <h2>Atenção! Livros com prazo vencido</h2>
+            <p id="alertas-count"></p>
+        </header>
+        <ol id="alertas-list" class="alertas-list" role="list"></ol>
+    </section>
+
+    
+    <section class="toolbar" aria-label="Busca e filtros">
+        <search class="toolbar__search" aria-label="Buscar empréstimos">
+            <label for="busca" class="sr-only">Buscar por usuário, livro ou matrícula</label>
+            <span class="search__wrapper">
+          <span class="search__icon" aria-hidden="true">🔍</span>
+          <input type="search" id="busca" name="q"
+                 placeholder="Buscar por usuário, livro ou matrícula..."
+                 autocomplete="off" />
+        </span>
+        </search>
+
+        <nav class="toolbar__filters" role="group" aria-label="Filtros">
+        <span class="select__wrapper">
+          <label for="filtro-status" class="sr-only">Filtrar por status</label>
+          <select id="filtro-status">
+            <option value="">Todos</option>
+            <option value="ativo">Em aberto</option>
+            <option value="atrasado">Atrasados</option>
+            <option value="devolvido">Devolvidos</option>
+          </select>
+          <span class="select__arrow" aria-hidden="true">▾</span>
+        </span>
+
+            <span class="select__wrapper">
+          <label for="filtro-multa" class="sr-only">Filtrar por multa</label>
+          <select id="filtro-multa">
+            <option value="">Todas</option>
+            <option value="com">Com multa</option>
+            <option value="sem">Sem multa</option>
+          </select>
+          <span class="select__arrow" aria-hidden="true">▾</span>
+        </span>
+        </nav>
+    </section>
+
+    
+    <p class="results-count" id="results-count"
+       aria-live="polite" aria-atomic="true"></p>
+
+    
+    <ol class="dev-list" id="dev-list" role="list"
+        aria-label="Lista de empréstimos pendentes de devolução"></ol>
+
+    <p class="empty-msg" id="empty-list" hidden>
+        Nenhum empréstimo encontrado com os filtros selecionados.
+    </p>
+
+</main>
+
+
+<dialog class="modal" id="modal" aria-modal="true" aria-labelledby="modal-title">
+
+    <header class="modal__header">
+        <h2 id="modal-title">Registrar Devolução</h2>
+        <button type="button" class="modal__close" id="modal-close" aria-label="Fechar">✕</button>
+    </header>
+
+    
+    <figure class="modal__resumo" id="modal-resumo" aria-label="Livro sendo devolvido">
+        <span class="resumo__cover" id="resumo-cover" aria-hidden="true"></span>
+        <figcaption class="resumo__info">
+            <strong id="resumo-titulo"></strong>
+            <span   id="resumo-autor"></span>
+            <span   id="resumo-usuario"></span>
+        </figcaption>
+        <span class="resumo__status" id="resumo-status" aria-label="Status atual"></span>
+    </figure>
+
+    <form id="form-devolucao" class="dev-form" novalidate
+          aria-label="Formulário de devolução">
+
+        
+        <fieldset class="form-fieldset">
+            <legend class="form-legend">Informações da devolução</legend>
+
+            <section class="form-grid form-grid--2" aria-label="Datas">
+
+                <p class="field">
+                    <label for="f-data-emp-ro">Data do empréstimo</label>
+                    <input type="date" id="f-data-emp-ro" name="data_emprestimo"
+                           readonly aria-readonly="true" />
+                </p>
+
+                <p class="field">
+                    <label for="f-data-dev">Data de devolução <span class="required" aria-hidden="true">*</span></label>
+                    <span class="date-input__wrapper">
+              <span class="date-input__icon" aria-hidden="true">📅</span>
+              <input type="date" id="f-data-dev" name="data_devolucao" required />
+            </span>
+                    <span class="field__error" role="alert" aria-live="polite"></span>
+                </p>
+
+            </section>
+        </fieldset>
+
+        
+        <aside class="multa-box" id="multa-box" hidden aria-label="Cálculo de multa">
+            <header class="multa-box__header">
+                <span aria-hidden="true">⚠️</span>
+                <h3>Multa por atraso</h3>
+            </header>
+            <dl class="multa-box__info">
+                <dt>Dias de atraso</dt>
+                <dd id="multa-dias">—</dd>
+                <dt>Valor por dia</dt>
+                <dd>R$ 1,00</dd>
+                <dt>Total da multa</dt>
+                <dd id="multa-total" class="multa-box__total">R$ 0,00</dd>
+            </dl>
+        </aside>
+
+        
+        <aside class="ok-box" id="ok-box" hidden aria-label="Devolução no prazo">
+            <span aria-hidden="true">✅</span>
+            <p>Devolução dentro do prazo! Nenhuma multa será aplicada.</p>
+        </aside>
+
+        
+        <fieldset class="form-fieldset">
+            <legend class="form-legend">Condição do livro devolvido</legend>
+            <fieldset class="status-options" role="radiogroup"
+                      aria-label="Condição do livro">
+                <legend class="sr-only">Selecione a condição</legend>
+
+                <label class="status-opt status-opt--verde">
+                    <input type="radio" name="condicao" value="otimo" checked />
+                    <span class="status-opt__box">
+              <span class="status-opt__dot" aria-hidden="true"></span>
+              <span class="status-opt__label">Ótimo estado</span>
+            </span>
+                </label>
+
+                <label class="status-opt status-opt--amarelo">
+                    <input type="radio" name="condicao" value="regular" />
+                    <span class="status-opt__box">
+              <span class="status-opt__dot" aria-hidden="true"></span>
+              <span class="status-opt__label">Estado regular</span>
+            </span>
+                </label>
+
+                <label class="status-opt status-opt--vermelho">
+                    <input type="radio" name="condicao" value="danificado" />
+                    <span class="status-opt__box">
+              <span class="status-opt__dot" aria-hidden="true"></span>
+              <span class="status-opt__label">Danificado</span>
+            </span>
+                </label>
+
+            </fieldset>
+        </fieldset>
+
+        
+        <fieldset class="form-fieldset">
+            <legend class="form-legend">Observação <span class="optional">(opcional)</span></legend>
+            <p class="field">
+                <label for="f-obs" class="sr-only">Observação sobre a devolução</label>
+                <textarea id="f-obs" name="observacao" rows="2"
+                          placeholder="Ex: Livro devolvido com rasuras na página 32..."></textarea>
+            </p>
+        </fieldset>
+
+        <footer class="form-footer">
+            <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+            <button type="submit" class="btn-devolver">↩️ Confirmar Devolução</button>
+        </footer>
+
+    </form>
+</dialog>
+
+
+<dialog class="modal modal--sm" id="modal-detalhe"
+        aria-modal="true" aria-labelledby="detalhe-title">
+    <header class="modal__header">
+        <h2 id="detalhe-title">Detalhes da Devolução</h2>
+        <button type="button" class="modal__close" id="detalhe-close" aria-label="Fechar">✕</button>
+    </header>
+    <section class="modal__detail-body" id="detalhe-body"
+             aria-label="Detalhes do empréstimo">
+    </section>
+</dialog>
+
+
+<output id="toast" class="toast"
+        role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="toast__icon" id="toast-icon" aria-hidden="true">✓</span>
+    <span id="toast-msg"></span>
+</output>
+
+<script src="devolucoes.js"></script>
+</body>
+</html>

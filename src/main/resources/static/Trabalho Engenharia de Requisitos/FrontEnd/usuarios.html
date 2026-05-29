@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca – Usuários</title>
+  <link rel="stylesheet" href="usuarios.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+
+    <header class="sidebar__header">
+      <span class="logo__icon" aria-hidden="true">📚</span>
+      <hgroup>
+        <h2 class="logo__name">Biblioteca</h2>
+        <p  class="logo__sub">Sistema de Gestão</p>
+      </hgroup>
+    </header>
+
+    <nav aria-label="Navegação principal">
+      <ul class="nav__list" role="list">
+        <li><a href="dashboard.html" class="nav__link"><span aria-hidden="true">🏠</span> Dashboard</a></li>
+        <li><a href="livros.html" class="nav__link"><span aria-hidden="true">📖</span> Livros</a></li>
+        <li><a href="usuarios.html" class="nav__link nav__link--active" aria-current="page"><span aria-hidden="true">👥</span> Usuários</a></li>
+        <li><a href="emprestimos.html" class="nav__link"><span aria-hidden="true">🤝</span> Empréstimos</a></li>
+        <li><a href="devolucoes.html" class="nav__link"><span aria-hidden="true">↩️</span> Devoluções</a></li>
+        <li><a href="multas.html" class="nav__link"><span aria-hidden="true">⚠️</span> Multas</a></li>
+
+      </ul>
+    </nav>
+
+    <footer class="sidebar__footer">
+      <a href="login.html" class="nav__link nav__link--sair"><span aria-hidden="true">🚪</span> Sair</a>
+    </footer>
+
+  </aside>
+
+
+  <span class="overlay" id="overlay" aria-hidden="true"></span>
+
+
+  <main class="main" id="main">
+
+
+    <header class="topbar">
+
+      <button class="btn-hamburger" id="btn-menu" type="button"
+              aria-label="Abrir menu lateral"
+              aria-controls="sidebar"
+              aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <hgroup class="topbar__heading">
+        <h1>Usuários</h1>
+        <p>Gerencie os usuários cadastrados</p>
+      </hgroup>
+
+
+      <address class="user-card" tabindex="0" aria-label="Usuário logado: Administrador">
+        <span class="user-card__avatar" aria-hidden="true">👤</span>
+        <strong class="user-card__name">Administrador</strong>
+        <span aria-hidden="true">▾</span>
+      </address>
+
+    </header>
+
+
+    <section class="metrics" aria-label="Métricas de usuários">
+
+      <article class="metric metric--purple">
+        <span class="metric__icon" aria-hidden="true">👥</span>
+        <footer class="metric__body">
+          <h3>Total de Usuários</h3>
+          <strong id="m-total">0</strong>
+          <p>Cadastrados</p>
+        </footer>
+      </article>
+
+      <article class="metric metric--green">
+        <span class="metric__icon" aria-hidden="true">✅</span>
+        <footer class="metric__body">
+          <h3>Ativos</h3>
+          <strong id="m-ativos">0</strong>
+          <p>Em dia</p>
+        </footer>
+      </article>
+
+      <article class="metric metric--orange">
+        <span class="metric__icon" aria-hidden="true">📚</span>
+        <footer class="metric__body">
+          <h3>Com Empréstimo</h3>
+          <strong id="m-emprestados">0</strong>
+          <p>Livros em mãos</p>
+        </footer>
+      </article>
+
+      <article class="metric metric--red">
+        <span class="metric__icon" aria-hidden="true">🚫</span>
+        <footer class="metric__body">
+          <h3>Bloqueados</h3>
+          <strong id="m-bloqueados">0</strong>
+          <p>Sem acesso</p>
+        </footer>
+      </article>
+
+    </section>
+
+
+    <section class="toolbar" aria-label="Busca e filtros">
+
+      <search class="toolbar__search" aria-label="Buscar usuários">
+        <label for="busca" class="sr-only">Buscar por nome, e-mail ou matrícula</label>
+        <span class="search__wrapper">
+          <span class="search__icon" aria-hidden="true">🔍</span>
+          <input type="search" id="busca" name="q"
+                 placeholder="Buscar por nome, e-mail ou matrícula..."
+                 autocomplete="off" />
+        </span>
+      </search>
+
+
+      <nav class="toolbar__filters" role="group" aria-label="Filtros de listagem">
+
+        <span class="select__wrapper">
+          <label for="filtro-status" class="sr-only">Filtrar por status</label>
+          <select id="filtro-status">
+            <option value="">Todos os status</option>
+            <option value="ativo">Ativo</option>
+            <option value="bloqueado">Bloqueado</option>
+            <option value="emprestado">Com empréstimo</option>
+          </select>
+          <span class="select__arrow" aria-hidden="true">▾</span>
+        </span>
+
+        <span class="select__wrapper">
+          <label for="filtro-tipo" class="sr-only">Filtrar por tipo</label>
+          <select id="filtro-tipo">
+            <option value="">Todos os tipos</option>
+            <option value="aluno">Aluno</option>
+            <option value="professor">Professor</option>
+            <option value="funcionario">Funcionário</option>
+          </select>
+          <span class="select__arrow" aria-hidden="true">▾</span>
+        </span>
+
+
+        <span class="view-toggle" role="group" aria-label="Modo de visualização">
+          <button type="button" class="view-btn view-btn--active" id="btn-cards"
+                  aria-pressed="true" title="Visualização em cards">⊞</button>
+          <button type="button" class="view-btn" id="btn-table"
+                  aria-pressed="false" title="Visualização em tabela">☰</button>
+        </span>
+
+      </nav>
+
+    </section>
+
+
+    <p class="results-count" id="results-count"
+       aria-live="polite" aria-atomic="true"></p>
+
+    <section id="view-cards" aria-label="Usuários em cards">
+      <ol class="user-grid" id="user-grid" role="list"></ol>
+      <p class="empty-msg" id="empty-cards" hidden>Nenhum usuário encontrado.</p>
+    </section>
+
+
+    <section id="view-table" hidden aria-label="Usuários em tabela">
+      <figure class="table-scroll" role="region"
+              aria-label="Tabela de usuários" tabindex="0">
+        <table class="data-table">
+          <caption class="sr-only">Lista de usuários com status e histórico</caption>
+          <thead>
+            <tr>
+              <th scope="col">Usuário</th>
+              <th scope="col">Matrícula</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Empréstimos</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="th-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </figure>
+      <p class="empty-msg" id="empty-table" hidden>Nenhum usuário encontrado.</p>
+    </section>
+
+  </main>
+
+
+  <button class="fab" id="btn-fab" type="button" aria-label="Adicionar novo usuário">
+    <span aria-hidden="true">+</span>
+  </button>
+
+
+  <dialog class="modal" id="modal"
+          aria-modal="true" aria-labelledby="modal-title">
+
+    <header class="modal__header">
+      <h2 id="modal-title">Adicionar Usuário</h2>
+      <button type="button" class="modal__close" id="modal-close"
+              aria-label="Fechar modal">✕</button>
+    </header>
+
+    <form id="form-usuario" class="user-form" novalidate
+          aria-label="Formulário de usuário">
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Identificação</legend>
+
+
+        <section class="form-grid form-grid--2">
+
+          <p class="field">
+            <label for="f-nome">Nome completo <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="f-nome" name="nome"
+                   placeholder="Ex: Maria Silva" required autocomplete="off" />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </p>
+
+          <p class="field">
+            <label for="f-email">E-mail <span class="required" aria-hidden="true">*</span></label>
+            <input type="email" id="f-email" name="email"
+                   placeholder="Ex: maria@email.com" required autocomplete="off" />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </p>
+
+          <p class="field">
+            <label for="f-matricula">Matrícula <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="f-matricula" name="matricula"
+                   placeholder="Ex: 2024001" required autocomplete="off" />
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </p>
+
+          <p class="field">
+            <label for="f-telefone">Telefone</label>
+            <input type="tel" id="f-telefone" name="telefone"
+                   placeholder="Ex: (71) 99999-0000" autocomplete="off" />
+          </p>
+
+        </section>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Classificação</legend>
+
+        <section class="form-grid form-grid--2">
+
+          <p class="field">
+            <label for="f-tipo">Tipo <span class="required" aria-hidden="true">*</span></label>
+            <span class="select__wrapper select__wrapper--field">
+              <select id="f-tipo" name="tipo" required>
+                <option value="">Selecione...</option>
+                <option value="aluno">Aluno</option>
+                <option value="professor">Professor</option>
+                <option value="funcionario">Funcionário</option>
+              </select>
+              <span class="select__arrow" aria-hidden="true">▾</span>
+            </span>
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </p>
+
+          <p class="field">
+            <label for="f-status">Status <span class="required" aria-hidden="true">*</span></label>
+            <span class="select__wrapper select__wrapper--field">
+              <select id="f-status" name="status" required>
+                <option value="">Selecione...</option>
+                <option value="ativo">Ativo</option>
+                <option value="bloqueado">Bloqueado</option>
+              </select>
+              <span class="select__arrow" aria-hidden="true">▾</span>
+            </span>
+            <span class="field__error" role="alert" aria-live="polite"></span>
+          </p>
+
+        </section>
+      </fieldset>
+
+      <footer class="form-footer">
+        <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+        <button type="submit"  class="btn-salvar"  id="btn-salvar">Salvar</button>
+      </footer>
+
+    </form>
+  </dialog>
+
+
+  <dialog class="modal modal--lg" id="modal-historico"
+          aria-modal="true" aria-labelledby="hist-title">
+
+    <header class="modal__header">
+
+      <hgroup class="modal__header-info">
+        <span class="modal__avatar" id="hist-avatar" aria-hidden="true"></span>
+        <h2 id="hist-title">Histórico de Empréstimos</h2>
+        <p id="hist-subtitle" class="modal__subtitle"></p>
+      </hgroup>
+      <button type="button" class="modal__close" id="hist-close"
+              aria-label="Fechar histórico">✕</button>
+    </header>
+
+
+    <section class="modal__body" id="hist-body"
+             aria-label="Histórico de empréstimos do usuário">
+
+    </section>
+
+  </dialog>
+
+
+  <dialog class="modal modal--sm" id="modal-bloquear"
+          aria-modal="true" aria-labelledby="bloquear-title">
+
+    <header class="modal__header">
+      <h2 id="bloquear-title">Bloquear usuário</h2>
+      <button type="button" class="modal__close" id="bloquear-close"
+              aria-label="Fechar">✕</button>
+    </header>
+
+    <p class="modal__body-text">
+      Tem certeza que deseja <strong id="bloquear-acao"></strong>
+      o usuário <strong id="bloquear-nome"></strong>?
+      <br><small>Essa ação pode ser revertida a qualquer momento.</small>
+    </p>
+
+    <footer class="form-footer">
+      <button type="button" class="btn-cancelar" id="bloquear-cancelar">Cancelar</button>
+      <button type="button" class="btn-bloquear-confirm" id="bloquear-confirmar">Confirmar</button>
+    </footer>
+
+  </dialog>
+
+
+  <output id="toast" class="toast"
+          role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="toast__icon" id="toast-icon" aria-hidden="true">✓</span>
+    <span id="toast-msg"></span>
+  </output>
+
+  <script src="usuarios.js"></script>
+</body>
+</html>

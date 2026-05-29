@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+
+
+<aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+
+  <header class="sidebar__header">
+    <span class="logo__icon" aria-hidden="true">📚</span>
+    <hgroup>
+      <h2 class="logo__name">Biblioteca</h2>
+      <p  class="logo__sub">Sistema de Gestão</p>
+    </hgroup>
+  </header>
+
+  <nav aria-label="Navegação principal">
+    <ul class="nav__list" role="list">
+      <li><a href="dashboard.html" class="nav__link"><span aria-hidden="true">🏠</span> Dashboard</a></li>
+      <li><a href="livros.html" class="nav__link"><span aria-hidden="true">📖</span> Livros</a></li>
+      <li><a href="usuarios.html" class="nav__link"><span aria-hidden="true">👥</span> Usuários</a></li>
+      <li><a href="emprestimos.html" class="nav__link nav__link--active" aria-current="page"><span aria-hidden="true">🤝</span> Empréstimos</a></li>
+      <li><a href="devolucoes.html" class="nav__link"><span aria-hidden="true">↩️</span> Devoluções</a></li>
+      <li><a href="multas.html" class="nav__link"><span aria-hidden="true">⚠️</span> Multas</a></li>
+
+    </ul>
+  </nav>
+
+  <footer class="sidebar__footer">
+      <a href="login.html" class="nav__link nav__link--sair"><span aria-hidden="true">🚪</span> Sair</a>
+  </footer>
+
+</aside>
+
+
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+
+
+<main class="main" id="main">
+
+  
+  <header class="topbar">
+
+    
+    <button class="btn-hamburger" id="btn-menu"
+            type="button"
+            aria-label="Abrir menu lateral"
+            aria-controls="sidebar"
+            aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <hgroup class="topbar__heading">
+      <h1>Dashboard</h1>
+      <p>Bem-vindo(a) de volta!</p>
+    </hgroup>
+
+    <div class="topbar__actions">
+
+      
+      <div class="search__wrapper">
+        <label for="busca" class="sr-only">Buscar livros e usuários</label>
+        <input type="search" id="busca" name="q"
+               placeholder="Buscar livros, usuários..."
+               autocomplete="off" />
+        <span aria-hidden="true">🔍</span>
+      </div>
+
+      
+      <div class="user-card" role="button" tabindex="0" aria-label="Menu do usuário Administrador">
+        <span class="user-card__avatar" aria-hidden="true">👤</span>
+        <div class="user-card__info">
+          <strong>Administrador</strong>
+          <span>admin@biblioteca.com</span>
+        </div>
+        <span aria-hidden="true">▾</span>
+      </div>
+
+    </div>
+  </header>
+
+  
+  
+  <section class="metrics" aria-label="Métricas gerais">
+
+    <article class="metric metric--purple">
+      <span class="metric__icon" aria-hidden="true">📚</span>
+      <div class="metric__body">
+        <h3>Total de Livros</h3>
+        <strong id="stat-livros">120</strong>
+        <p>Livros cadastrados</p>
+      </div>
+      <svg class="metric__sparkline" aria-hidden="true"
+           viewBox="0 0 80 30" preserveAspectRatio="none">
+        <polyline points="0,25 15,18 30,22 45,10 60,15 75,8"
+                  fill="none" stroke="#a855f7" stroke-width="2"/>
+      </svg>
+    </article>
+
+    <article class="metric metric--teal">
+      <span class="metric__icon" aria-hidden="true">👥</span>
+      <div class="metric__body">
+        <h3>Usuários Cadastrados</h3>
+        <strong id="stat-usuarios">58</strong>
+        <p>Total de usuários</p>
+      </div>
+      <svg class="metric__sparkline" aria-hidden="true"
+           viewBox="0 0 80 30" preserveAspectRatio="none">
+        <polyline points="0,20 15,25 30,15 45,18 60,10 75,14"
+                  fill="none" stroke="#14b8a6" stroke-width="2"/>
+      </svg>
+    </article>
+
+    <article class="metric metric--orange">
+      <span class="metric__icon" aria-hidden="true">🔄</span>
+      <div class="metric__body">
+        <h3>Empréstimos Ativos</h3>
+        <strong id="stat-emprestimos">32</strong>
+        <p>Empréstimos realizados</p>
+      </div>
+      <svg class="metric__sparkline" aria-hidden="true"
+           viewBox="0 0 80 30" preserveAspectRatio="none">
+        <polyline points="0,22 15,15 30,20 45,12 60,18 75,8"
+                  fill="none" stroke="#f97316" stroke-width="2"/>
+      </svg>
+    </article>
+
+    <article class="metric metric--red">
+      <span class="metric__icon" aria-hidden="true">⚠️</span>
+      <div class="metric__body">
+        <h3>Multas Pendentes</h3>
+        <strong id="stat-multas">7</strong>
+        <p>Total de multas</p>
+      </div>
+      <svg class="metric__sparkline" aria-hidden="true"
+           viewBox="0 0 80 30" preserveAspectRatio="none">
+        <polyline points="0,10 15,20 30,15 45,25 60,18 75,22"
+                  fill="none" stroke="#ef4444" stroke-width="2"/>
+      </svg>
+    </article>
+
+  </section>
+
+  
+  <section class="tables-row" aria-label="Livros e empréstimos">
+
+    <article class="card">
+      <header class="card__header">
+        <h2>Livros Disponíveis</h2>
+        <button type="button" class="btn-secondary" onclick="window.location.href='livros.html'">Ver todos</button>
+      </header>
+      
+      <div class="table-scroll" role="region"
+           aria-label="Livros disponíveis" tabindex="0">
+        <table class="data-table">
+          <caption class="sr-only">Lista de livros disponíveis para empréstimo</caption>
+          <thead>
+          <tr>
+            <th scope="col">Livro</th>
+            <th scope="col">Autor</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Status</th>
+          </tr>
+          </thead>
+          <tbody id="tabela-livros"></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="card">
+      <header class="card__header">
+        <h2>Empréstimos Recentes</h2>
+        <button type="button" class="btn-secondary" onclick="window.location.href='emprestimos.html'">Ver todos</button>
+      </header>
+      <div class="table-scroll" role="region"
+           aria-label="Empréstimos recentes" tabindex="0">
+        <table class="data-table">
+          <caption class="sr-only">Empréstimos realizados recentemente</caption>
+          <thead>
+          <tr>
+            <th scope="col">Usuário</th>
+            <th scope="col">Livro</th>
+            <th scope="col">Data Emp.</th>
+            <th scope="col">Devolução</th>
+          </tr>
+          </thead>
+          <tbody id="tabela-emprestimos"></tbody>
+        </table>
+      </div>
+    </article>
+
+  </section>
+
+  
+  <section class="bottom-row" aria-label="Alertas e ações rápidas">
+
+
+    <aside class="card" aria-label="Alertas e notificações">
+      <header class="card__header">
+        <h2><span aria-hidden="true">🔔</span> Alertas e Notificações</h2>
+      </header>
+      <ul id="alertas-list" role="list" class="alertas"></ul>
+    </aside>
+
+    <nav class="card" aria-label="Ações rápidas">
+      <header class="card__header">
+        <h2>Ações Rápidas</h2>
+      </header>
+      <ul id="acoes-rapidas" role="list" class="acoes"></ul>
+    </nav>
+
+  </section>
+
+</main>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

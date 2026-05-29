@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioSystem - Login</title>
+    <link rel="stylesheet" href="login.css">
+
+    <link rel="icon" href="logo.png" type="image/png">
+
+
+</head>
+
+<body>
+
+    <aside class="bg" aria-hidden="true">
+        <span class="bg-orb orb-1"></span>
+        <span class="bg-orb orb-2"></span>
+        <span class="bg-orb orb-3"></span>
+        <span class="bg-orb orb-4"></span>
+    </aside>
+
+    <main>
+        <section class="card">
+
+            <header>
+                <h1 class="titulo">Bem-vindo</h1>
+                <p>Entre para acessar o sistema da biblioteca</p>
+                
+            </header>
+
+            <nav class="tabs">
+                <button id="tab-login" class="active" onclick="switchTab('login')">Entrar</button>
+                <button id="tab-cadastro" onclick="switchTab('cadastro')">Criar Conta</button>
+            </nav>
+
+            <div class="form-viewport">
+
+                <section class="container-form login">
+
+                    <section id="painel-login" class="painel">
+                        <form onsubmit="event.preventDefault(); fazerLogin();">
+
+                            <label>Email</label>
+                            <input id="login-email" type="email" required placeholder="seu@email.com">
+
+                            <label>Senha</label>
+                            <input id="login-senha" type="password" required placeholder="••••••••">
+
+                            <label>
+                                <input type="checkbox"> Lembrar de mim
+                            </label>
+
+                            <button type="submit">Entrar</button>
+
+                        </form>
+                    </section>
+
+                    <section id="painel-cadastro" class="painel">
+                        <form onsubmit="event.preventDefault(); fazerCadastro();">
+
+                            <label>Nome</label>
+                            <input type="text" required placeholder="Elton Figueiredo">
+
+                            <label>Email</label>
+                            <input type="email" required placeholder="seu@email.com">
+
+                            <label>Senha</label>
+                            <input type="password" required minlength="6" placeholder="••••••••">
+
+                            <label>CPF</label>
+                            <input id="cadastro-cpf" type="text" required minlength="11" placeholder="000.000.000-00">
+
+                            <label>Numero de telefone</label>
+                            <input type="text" required minlength="10" placeholder="(00) 00000-0000">
+
+                            <label>Perfil</label>
+                            <select>
+                                <option>Administrador</option>
+                                <option>Bibliotecário</option>
+                            </select>
+
+                            <button type="submit">Criar conta</button>
+
+                        </form>
+                    </section>
+
+                </section>
+
+            </div>
+
+        </section>
+    </main>
+
+   
+    <section id="toast-container" class="toast-container"></section>
+
+    <script src="login.js"></script>
+</body>
+</html>

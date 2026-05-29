@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca – Empréstimos</title>
+  <link rel="stylesheet" href="emprestimos.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+
+    <header class="sidebar__header">
+      <span class="logo__icon" aria-hidden="true">📚</span>
+      <hgroup>
+        <h2 class="logo__name">Biblioteca</h2>
+        <p  class="logo__sub">Sistema de Gestão</p>
+      </hgroup>
+    </header>
+
+    <nav aria-label="Navegação principal">
+      <ul class="nav__list" role="list">
+        <li><a href="dashboard.html" class="nav__link"><span aria-hidden="true">🏠</span> Dashboard</a></li>
+        <li><a href="livros.html" class="nav__link"><span aria-hidden="true">📖</span> Livros</a></li>
+        <li><a href="usuarios.html" class="nav__link"><span aria-hidden="true">👥</span> Usuários</a></li>
+        <li><a href="emprestimos.html" class="nav__link nav__link--active" aria-current="page"><span aria-hidden="true">🤝</span> Empréstimos</a></li>
+        <li><a href="devolucoes.html" class="nav__link"><span aria-hidden="true">↩️</span> Devoluções</a></li>
+        <li><a href="multas.html" class="nav__link"><span aria-hidden="true">⚠️</span> Multas</a></li>
+
+      </ul>
+    </nav>
+
+    <footer class="sidebar__footer">
+      <a href="login.html" class="nav__link nav__link--sair"><span aria-hidden="true">🚪</span> Sair</a>
+    </footer>
+
+  </aside>
+
+  <span class="overlay" id="overlay" aria-hidden="true"></span>
+
+  
+  <main class="main" id="main">
+
+    
+    <header class="topbar">
+      <button class="btn-hamburger" id="btn-menu" type="button"
+              aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <hgroup class="topbar__heading">
+        <h1>Empréstimos</h1>
+        <p>Registre e gerencie os empréstimos</p>
+      </hgroup>
+
+      <address class="user-card" tabindex="0" aria-label="Usuário logado: Administrador">
+        <span class="user-card__avatar" aria-hidden="true">👤</span>
+        <strong class="user-card__name">Administrador</strong>
+        <span aria-hidden="true">▾</span>
+      </address>
+    </header>
+
+    
+    <section class="metrics" aria-label="Métricas de empréstimos">
+
+      <article class="metric metric--purple">
+        <span class="metric__icon" aria-hidden="true">🤝</span>
+        <footer class="metric__body">
+          <h3>Total</h3>
+          <strong id="m-total">0</strong>
+          <p>Registrados</p>
+        </footer>
+      </article>
+
+      <article class="metric metric--orange">
+        <span class="metric__icon" aria-hidden="true">📖</span>
+        <footer class="metric__body">
+          <h3>Em Aberto</h3>
+          <strong id="m-abertos">0</strong>
+          <p>Não devolvidos</p>
+        </footer>
+      </article>
+
+      <article class="metric metric--red">
+        <span class="metric__icon" aria-hidden="true">⏰</span>
+        <footer class="metric__body">
+          <h3>Atrasados</h3>
+          <strong id="m-atrasados">0</strong>
+          <p>Prazo vencido</p>
+        </footer>
+      </article>
+
+      <article class="metric metric--green">
+        <span class="metric__icon" aria-hidden="true">✅</span>
+        <footer class="metric__body">
+          <h3>Devolvidos</h3>
+          <strong id="m-devolvidos">0</strong>
+          <p>Concluídos</p>
+        </footer>
+      </article>
+
+    </section>
+
+    
+    <section class="content-grid" aria-label="Conteúdo principal">
+
+      
+      <section class="panel panel--form" aria-label="Novo empréstimo">
+
+        <header class="panel__header">
+          <h2>Novo Empréstimo</h2>
+          <p>Preencha os dados abaixo para registrar</p>
+        </header>
+
+        <form id="form-emprestimo" class="emp-form" novalidate
+              aria-label="Formulário de novo empréstimo">
+
+          
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Usuário</legend>
+
+            <p class="field">
+              <label for="f-usuario">Selecionar usuário <span class="required" aria-hidden="true">*</span></label>
+              <span class="search-select__wrapper">
+                <span class="search-select__icon" aria-hidden="true">🔍</span>
+                <input type="search" id="f-usuario" name="usuario_busca"
+                       placeholder="Buscar por nome ou matrícula..."
+                       autocomplete="off" role="combobox"
+                       aria-expanded="false"
+                       aria-autocomplete="list"
+                       aria-controls="lista-usuarios" />
+              </span>
+              <span class="field__error" role="alert" aria-live="polite"></span>
+              <input type="hidden" id="f-usuario-id" name="usuario_id" />
+            </p>
+
+            
+            <ul id="lista-usuarios" class="dropdown" role="listbox"
+                aria-label="Usuários encontrados" hidden></ul>
+
+            
+            <figure class="selected-user" id="selected-user" hidden
+                    aria-label="Usuário selecionado">
+              <span class="selected-user__avatar" id="sel-user-av" aria-hidden="true"></span>
+              <figcaption class="selected-user__info">
+                <strong id="sel-user-nome"></strong>
+                <span id="sel-user-meta"></span>
+              </figcaption>
+              <button type="button" class="selected-user__clear"
+                      id="clear-user" aria-label="Remover usuário selecionado">✕</button>
+            </figure>
+
+          </fieldset>
+
+          
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Livro</legend>
+
+            <p class="field">
+              <label for="f-livro">Selecionar livro <span class="required" aria-hidden="true">*</span></label>
+              <span class="search-select__wrapper">
+                <span class="search-select__icon" aria-hidden="true">🔍</span>
+                <input type="search" id="f-livro" name="livro_busca"
+                       placeholder="Buscar por título ou autor..."
+                       autocomplete="off" role="combobox"
+                       aria-expanded="false"
+                       aria-autocomplete="list"
+                       aria-controls="lista-livros" />
+              </span>
+              <span class="field__error" role="alert" aria-live="polite"></span>
+              <input type="hidden" id="f-livro-id" name="livro_id" />
+            </p>
+
+            <ul id="lista-livros" class="dropdown" role="listbox"
+                aria-label="Livros encontrados" hidden></ul>
+
+            
+            <figure class="selected-book" id="selected-book" hidden
+                    aria-label="Livro selecionado">
+              <span class="selected-book__cover" id="sel-book-cover" aria-hidden="true"></span>
+              <figcaption class="selected-book__info">
+                <strong id="sel-book-titulo"></strong>
+                <span  id="sel-book-autor"></span>
+                <span  id="sel-book-cat"></span>
+              </figcaption>
+              <button type="button" class="selected-book__clear"
+                      id="clear-book" aria-label="Remover livro selecionado">✕</button>
+            </figure>
+
+          </fieldset>
+
+          
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Datas</legend>
+
+            <section class="form-grid form-grid--2" aria-label="Seleção de datas">
+
+              <p class="field">
+                <label for="f-data-emp">Data do empréstimo <span class="required" aria-hidden="true">*</span></label>
+                <span class="date-input__wrapper">
+                  <span class="date-input__icon" aria-hidden="true">📅</span>
+                  <input type="date" id="f-data-emp" name="data_emprestimo" required />
+                </span>
+                <span class="field__error" role="alert" aria-live="polite"></span>
+              </p>
+
+              <p class="field">
+                <label for="f-data-dev">Data de devolução <span class="required" aria-hidden="true">*</span></label>
+                <span class="date-input__wrapper">
+                  <span class="date-input__icon" aria-hidden="true">📆</span>
+                  <input type="date" id="f-data-dev" name="data_devolucao" required />
+                </span>
+                <span class="field__error" role="alert" aria-live="polite"></span>
+              </p>
+
+            </section>
+
+            
+            <output id="prazo-preview" class="prazo-preview" hidden
+                    aria-live="polite" aria-atomic="true"></output>
+
+          </fieldset>
+
+          
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Status</legend>
+
+            
+            <fieldset class="status-options" role="radiogroup"
+                      aria-label="Status do empréstimo">
+              <legend class="sr-only">Escolha o status</legend>
+
+              <label class="status-opt status-opt--ativo">
+                <input type="radio" name="status" value="ativo" checked />
+                <span class="status-opt__box">
+                  <span class="status-opt__dot" aria-hidden="true"></span>
+                  <span class="status-opt__label">Em aberto</span>
+                </span>
+              </label>
+
+              <label class="status-opt status-opt--devolvido">
+                <input type="radio" name="status" value="devolvido" />
+                <span class="status-opt__box">
+                  <span class="status-opt__dot" aria-hidden="true"></span>
+                  <span class="status-opt__label">Devolvido</span>
+                </span>
+              </label>
+
+              <label class="status-opt status-opt--atrasado">
+                <input type="radio" name="status" value="atrasado" />
+                <span class="status-opt__box">
+                  <span class="status-opt__dot" aria-hidden="true"></span>
+                  <span class="status-opt__label">Atrasado</span>
+                </span>
+              </label>
+
+            </fieldset>
+
+          </fieldset>
+
+          
+          <fieldset class="form-fieldset">
+            <legend class="form-legend">Observação <span class="optional">(opcional)</span></legend>
+            <p class="field">
+              <label for="f-obs" class="sr-only">Observação sobre o empréstimo</label>
+              <textarea id="f-obs" name="observacao" rows="2"
+                        placeholder="Ex: Livro retirado com avaria na capa..."></textarea>
+            </p>
+          </fieldset>
+
+          <footer class="form-footer">
+            <button type="button" class="btn-cancelar" id="btn-cancelar">Limpar</button>
+            <button type="submit" class="btn-salvar">Registrar Empréstimo</button>
+          </footer>
+
+        </form>
+
+      </section>
+
+      
+      <section class="panel panel--list" aria-label="Visão geral e listagem">
+
+        
+        <article class="calendar-card" aria-label="Calendário de empréstimos">
+          <header class="calendar__header">
+            <button type="button" class="cal-nav" id="cal-prev" aria-label="Mês anterior">‹</button>
+            <h3 id="cal-title"></h3>
+            <button type="button" class="cal-nav" id="cal-next" aria-label="Próximo mês">›</button>
+          </header>
+
+          <ol class="cal-weekdays" role="list" aria-hidden="true">
+            <li>Dom</li><li>Seg</li><li>Ter</li>
+            <li>Qua</li><li>Qui</li><li>Sex</li><li>Sáb</li>
+          </ol>
+
+          <ol class="cal-days" id="cal-days" role="list"
+              aria-label="Dias do mês"></ol>
+
+          <footer class="cal-legend" aria-label="Legenda do calendário">
+            <span class="leg-item"><span class="leg-dot leg-dot--emp" aria-hidden="true"></span> Empréstimo</span>
+            <span class="leg-item"><span class="leg-dot leg-dot--dev" aria-hidden="true"></span> Devolução</span>
+            <span class="leg-item"><span class="leg-dot leg-dot--today" aria-hidden="true"></span> Hoje</span>
+          </footer>
+        </article>
+
+        
+        <header class="list-toolbar">
+          <h2>Empréstimos Registrados</h2>
+          <search aria-label="Filtrar empréstimos">
+            <label for="busca-emp" class="sr-only">Filtrar por usuário ou livro</label>
+            <span class="search__wrapper search__wrapper--sm">
+              <span aria-hidden="true">🔍</span>
+              <input type="search" id="busca-emp"
+                     placeholder="Filtrar..." autocomplete="off" />
+            </span>
+          </search>
+          <span class="select__wrapper">
+            <label for="filtro-status" class="sr-only">Filtrar por status</label>
+            <select id="filtro-status">
+              <option value="">Todos</option>
+              <option value="ativo">Em aberto</option>
+              <option value="atrasado">Atrasados</option>
+              <option value="devolvido">Devolvidos</option>
+            </select>
+            <span class="select__arrow" aria-hidden="true">▾</span>
+          </span>
+        </header>
+
+        
+        <ol class="emp-list" id="emp-list" role="list"
+            aria-label="Lista de empréstimos"></ol>
+        <p class="empty-msg" id="empty-list" hidden>Nenhum empréstimo encontrado.</p>
+
+      </section>
+
+    </section>
+
+  </main>
+
+  
+  <button class="fab" id="btn-fab" type="button"
+          aria-label="Focar no formulário de novo empréstimo">
+    <span aria-hidden="true">+</span>
+  </button>
+
+  
+  <dialog class="modal" id="modal" aria-modal="true" aria-labelledby="modal-title">
+    <header class="modal__header">
+      <h2 id="modal-title">Editar Empréstimo</h2>
+      <button type="button" class="modal__close" id="modal-close" aria-label="Fechar">✕</button>
+    </header>
+
+    <form id="form-editar" class="emp-form" novalidate
+          aria-label="Editar empréstimo">
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Informações</legend>
+        <p class="field-info" id="modal-info"></p>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Datas</legend>
+        <section class="form-grid form-grid--2">
+          <p class="field">
+            <label for="e-data-emp">Data do empréstimo <span class="required" aria-hidden="true">*</span></label>
+            <span class="date-input__wrapper">
+              <span class="date-input__icon" aria-hidden="true">📅</span>
+              <input type="date" id="e-data-emp" name="data_emprestimo" required />
+            </span>
+          </p>
+          <p class="field">
+            <label for="e-data-dev">Data de devolução <span class="required" aria-hidden="true">*</span></label>
+            <span class="date-input__wrapper">
+              <span class="date-input__icon" aria-hidden="true">📆</span>
+              <input type="date" id="e-data-dev" name="data_devolucao" required />
+            </span>
+          </p>
+        </section>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Status</legend>
+        <fieldset class="status-options" role="radiogroup" aria-label="Status">
+          <legend class="sr-only">Escolha o status</legend>
+          <label class="status-opt status-opt--ativo">
+            <input type="radio" name="e_status" value="ativo" />
+            <span class="status-opt__box"><span class="status-opt__dot" aria-hidden="true"></span><span class="status-opt__label">Em aberto</span></span>
+          </label>
+          <label class="status-opt status-opt--devolvido">
+            <input type="radio" name="e_status" value="devolvido" />
+            <span class="status-opt__box"><span class="status-opt__dot" aria-hidden="true"></span><span class="status-opt__label">Devolvido</span></span>
+          </label>
+          <label class="status-opt status-opt--atrasado">
+            <input type="radio" name="e_status" value="atrasado" />
+            <span class="status-opt__box"><span class="status-opt__dot" aria-hidden="true"></span><span class="status-opt__label">Atrasado</span></span>
+          </label>
+        </fieldset>
+      </fieldset>
+
+      <fieldset class="form-fieldset">
+        <legend class="form-legend">Observação <span class="optional">(opcional)</span></legend>
+        <p class="field">
+          <label for="e-obs" class="sr-only">Observação</label>
+          <textarea id="e-obs" name="observacao" rows="2"
+                    placeholder="Observações sobre o empréstimo..."></textarea>
+        </p>
+      </fieldset>
+
+      <footer class="form-footer">
+        <button type="button" class="btn-cancelar" id="modal-cancelar">Cancelar</button>
+        <button type="submit" class="btn-salvar">Salvar Alterações</button>
+      </footer>
+
+    </form>
+  </dialog>
+
+  
+  <dialog class="modal modal--sm" id="modal-excluir"
+          aria-modal="true" aria-labelledby="excluir-title">
+    <header class="modal__header">
+      <h2 id="excluir-title">Excluir empréstimo</h2>
+      <button type="button" class="modal__close" id="excluir-close" aria-label="Fechar">✕</button>
+    </header>
+    <p class="modal__body-text">
+      Tem certeza que deseja excluir o empréstimo de
+      <strong id="excluir-info"></strong>?
+      <br><small>Essa ação não pode ser desfeita.</small>
+    </p>
+    <footer class="form-footer">
+      <button type="button" class="btn-cancelar" id="excluir-cancelar">Cancelar</button>
+      <button type="button" class="btn-excluir-confirm" id="excluir-confirmar">Excluir</button>
+    </footer>
+  </dialog>
+
+  
+  <output id="toast" class="toast"
+          role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="toast__icon" id="toast-icon" aria-hidden="true">✓</span>
+    <span id="toast-msg"></span>
+  </output>
+
+  <script src="emprestimos.js"></script>
+</body>
+</html>

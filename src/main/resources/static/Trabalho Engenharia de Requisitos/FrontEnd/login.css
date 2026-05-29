@@ -1,0 +1,416 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg-1: #0a0818;
+    --bg-2: #0e0c20;
+
+    --glass: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.12);
+
+    --input-bg: rgba(255, 255, 255, 0.07);
+    --input-border: rgba(255, 255, 255, 0.14);
+
+    --purple: #7c3aed;
+    --purple-light: #c4b5fd;
+
+    --text-primary: #f0eeff;
+    --text-secondary: rgba(200, 192, 255, 0.65);
+
+    --error: #f87171;
+}
+
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-1);
+    color: var(--text-primary);
+    
+    
+}
+
+
+.bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(160deg, #06040f 0%, #0e0928 50%, #06040f 100%),
+    url("ChatGPT\ Image\ 11\ de\ mai.\ de\ 2026\,\ 22_45_08.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    background-blend-mode: soft-light;
+
+    
+}
+.bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.25);
+
+    backdrop-filter: blur(4px);
+}
+
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+}
+
+.orb-1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(124, 58, 237, 0.25);
+    top: -100px;
+    right: -100px;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: rgba(76, 29, 149, 0.2);
+    bottom: -100px;
+    left: -80px;
+}
+
+.orb-3 {
+    width: 300px;
+    height: 300px;
+    background: rgba(139, 92, 246, 0.15);
+    top: 40%;
+    left: 30%;
+}
+
+.orb-4 {
+    width: 200px;
+    height: 200px;
+    background: rgba(167, 139, 250, 0.15);
+    top: 20%;
+    right: 20%;
+}
+
+
+main {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 40px; 
+}
+
+.card {
+    width: 100%;
+    max-width: 420px;
+    
+    padding: 40px;
+    border-radius: 30px;
+    background: var(--glass);
+    border: 0px solid var(--glass-border);
+    backdrop-filter: blur(72px);
+    margin: auto ;
+    box-shadow: 0 22px 40px rgba(56, 1, 255, 0.15);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.titulo {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-size: 28px;
+    margin-bottom: 14px; 
+    letter-spacing: -0.3px; 
+}
+
+header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+
+.tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tabs button.active {
+    background: rgba(124, 58, 237, 0.3);
+    color: var(--purple-light);
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+input,
+select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+}
+
+label input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+
+button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button[type="submit"],
+form button:last-of-type {
+    background: var(--text-primary);
+    color: #0a0818;
+    font-weight: bold;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.85;
+}
+
+form button[type="button"] {
+    background: none;
+    color: var(--purple-light);
+    text-align: left;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    color: var(--text-secondary);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 20px;
+    }
+}
+
+
+.container-form {
+    display: flex;
+    width: 200%;
+    transition: transform 0.5s ease;
+}
+
+.painel {
+    width: 50%;
+    padding-right: 5px;
+}
+
+
+.container-form.login {
+    transform: translateX(0%);
+}
+
+.container-form.cadastro {
+    transform: translateX(-50%);
+}
+
+.form-viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.container-form {
+    display: flex;
+    width: 200%;
+    transition: transform 0.5s ease;
+}
+
+.painel {
+    width: 50%;
+}
+
+select {
+    background: var(--input-bg);
+    color: var(--text-primary); 
+}
+
+option {
+    background-color: #0e0c20; 
+    color: #f0eeff; 
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 18px;
+  height: 18px;
+
+  border: 2px solid var(--input-border);
+  border-radius: 50%;
+
+  background: transparent;
+  cursor: pointer;
+
+  display: inline-grid;
+  place-content: center;
+
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--purple);
+
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+
+input[type="checkbox"]:checked {
+  border-color: var(--purple);
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.6);
+}
+
+
+input[type="checkbox"]:checked:hover {
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.9);
+}
+
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:checked {
+  animation: bounce 0.3s ease;
+}
+
+@keyframes bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.3); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+input[type="checkbox"]:active {
+  transform: scale(0.85);
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+.toast {
+  background: rgba(20, 60, 40, 0.95);
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  color: #d1fae5;
+
+  padding: 12px 20px;
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  backdrop-filter: blur(15px);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+
+  animation: toastIn 0.4s ease forwards;
+}
+
+
+.toast::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6ee7b7;
+}
+
+
+.toast.out {
+  animation: toastOut 0.3s ease forwards;
+}
+
+@keyframes toastIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastOut {
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+}
+
+.form-viewport {
+    overflow: hidden;
+    width: 100%;
+
+    margin-top: 25px; 
+}
+
+#painel-login button[type="submit"] {
+    margin-top: 25px;
+}
+#painel-login label:has(input[type="checkbox"]) {
+    margin-top: 12px;
+}
