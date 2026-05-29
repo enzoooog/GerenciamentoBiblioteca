@@ -19,6 +19,12 @@ const acoes = [
   { icon: "⚠️", classe: "acao__icon--red",    label: "Ver Multas",          href: "multas.html"      },
 ];
 
+function primeiraMaiuscula(valor) {
+  const texto = String(valor || "").trim();
+  if (!texto) return "";
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
 
 function renderLivros() {
   const termo = termoBuscaDashboard.toLowerCase().trim();
@@ -35,7 +41,7 @@ function renderLivros() {
         </div>
       </td>
       <td>${l.autor}</td>
-      <td>${l.categoria}</td>
+      <td>${primeiraMaiuscula(l.categoria)}</td>
       <td><span class="badge badge--green">Disponível</span></td>
     </tr>
   `).join("");
