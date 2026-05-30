@@ -2,12 +2,12 @@
 const AVATAR_CORES = ["av0","av1","av2","av3","av4","av5","av6","av7"];
 const COVER_CORES  = ["c1","c2","c3","c4","c5","c6","c7","c8"];
 const COVER_HEX    = ["#e74c3c","#f39c12","#1abc9c","#3498db","#9b59b6","#2ecc71","#e91e63","#00bcd4"];
-const COVER_EMOJI  = ["ðŸ“—","ðŸ“˜","ðŸ“™","ðŸ“•","ðŸ““","ðŸ“”","ðŸ“’","ðŸ“š"];
+const COVER_EMOJI  = ["📗","📘","📙","📕","📓","📔","📒","📚"];
 
 const CAT_NOMES = {
-  romance:"Romance", fantasia:"Fantasia", ficcao:"FicÃ§Ã£o CientÃ­fica",
-  programacao:"ProgramaÃ§Ã£o", negocios:"NegÃ³cios & GestÃ£o",
-  design:"Design & UI", recrutamento:"Recrutamento", fabula:"FÃ¡bula",
+  romance:"Romance", fantasia:"Fantasia", ficcao:"Ficção Científica",
+  programacao:"Programação", negocios:"Negócios & Gestão",
+  design:"Design & UI", recrutamento:"Recrutamento", fabula:"Fábula",
 };
 const CAT_CORES = {
   romance:"red", fantasia:"purple", ficcao:"blue",
@@ -41,7 +41,7 @@ function coverHex(id) { return COVER_HEX[(id-1)    % COVER_HEX.length]; }
 function coverEmoji(id){ return COVER_EMOJI[(id-1) % COVER_EMOJI.length]; }
 
 function fmtData(iso) {
-  if (!iso) return "â€”";
+  if (!iso) return "—";
   const [y,m,d] = iso.split("-");
   return `${d}/${m}/${y}`;
 }
@@ -81,7 +81,7 @@ function animarContador(id, alvo, dur = 700) {
 let calAno = new Date().getFullYear();
 let calMes = new Date().getMonth();
 
-const MESES = ["Janeiro","Fevereiro","MarÃ§o","Abril","Maio","Junho",
+const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
   "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
 function renderCalendario() {
@@ -156,9 +156,9 @@ function renderCalendario() {
 
     
     let tipLines = [];
-    if (hasEmp) tipLines.push(...(listEmp.map(x => `ðŸ“… Emp: ${x.livro}\nðŸ‘¤ ${x.usuario}`)));
-    if (hasDev) tipLines.push(...(listDev.map(x => `ðŸ“† Dev: ${x.livro}\nðŸ‘¤ ${x.usuario}`)));
-    const tip = tipLines.join("\nâ”€â”€â”€â”€â”€\n");
+    if (hasEmp) tipLines.push(...(listEmp.map(x => `📅 Emp: ${x.livro}\n👤 ${x.usuario}`)));
+    if (hasDev) tipLines.push(...(listDev.map(x => `📆 Dev: ${x.livro}\n👤 ${x.usuario}`)));
+    const tip = tipLines.join("\n─────\n");
 
     
     let dots = "";
@@ -170,7 +170,7 @@ function renderCalendario() {
       ).join("")}</span>`;
     }
 
-    const ariaLabel = `${d} de ${MESES[calMes]}${isHoje?", hoje":""}${hasEmp?`, ${listEmp.length} emprÃ©stimo(s)`:""}${hasDev?`, ${listDev.length} devoluÃ§Ã£o(Ãµes)`:""}`;
+    const ariaLabel = `${d} de ${MESES[calMes]}${isHoje?", hoje":""}${hasEmp?`, ${listEmp.length} empréstimo(s)`:""}${hasDev?`, ${listDev.length} devolução(ões)`:""}`;
 
     html += `<li class="cal-day ${cls}"
                  aria-label="${ariaLabel}"
@@ -200,7 +200,7 @@ function mostrarTooltip(cel) {
   tooltipEl = document.createElement("aside");
   tooltipEl.className = "cal-tooltip";
   tooltipEl.setAttribute("role","tooltip");
-  tip.split("\nâ”€â”€â”€â”€â”€\n").forEach((bloco, i) => {
+  tip.split("\n─────\n").forEach((bloco, i) => {
     if (i > 0) { const hr = document.createElement("hr"); tooltipEl.appendChild(hr); }
     bloco.split("\n").forEach(linha => {
       const p = document.createElement("p"); p.textContent = linha;
@@ -245,13 +245,13 @@ function atualizarPrazo(idEmp, idDev, idOutput) {
 
   const dias = diasEntre(emp, dev);
   if (dias <= 0) {
-    out.textContent = "âš ï¸ A data de devoluÃ§Ã£o deve ser apÃ³s o emprÃ©stimo.";
+    out.textContent = "⚠️ A data de devolução deve ser após o empréstimo.";
     out.className = "prazo-preview prazo-preview--danger";
   } else if (dias <= 7) {
-    out.textContent = `âš¡ Prazo curto: ${dias} dia${dias>1?"s":""} para devoluÃ§Ã£o.`;
+    out.textContent = `⚡ Prazo curto: ${dias} dia${dias>1?"s":""} para devolução.`;
     out.className = "prazo-preview prazo-preview--warn";
   } else {
-    out.textContent = `âœ… Prazo de ${dias} dia${dias>1?"s":""} para devoluÃ§Ã£o.`;
+    out.textContent = `✅ Prazo de ${dias} dia${dias>1?"s":""} para devolução.`;
     out.className = "prazo-preview prazo-preview--ok";
   }
   out.hidden = false;
@@ -271,7 +271,7 @@ function initSearchUsuario() {
 
     if (!q || results.length === 0) {
       lista.innerHTML = q
-          ? `<li class="dropdown__empty">Nenhum usuÃ¡rio encontrado.</li>`
+          ? `<li class="dropdown__empty">Nenhum usuário encontrado.</li>`
           : "";
       lista.hidden = !q;
       input.setAttribute("aria-expanded", q ? "true" : "false");
@@ -284,7 +284,7 @@ function initSearchUsuario() {
         <span class="dropdown__avatar ${avCor(u.id)}">${iniciais(u.nome)}</span>
         <span class="dropdown__info">
           <strong>${u.nome}</strong>
-          <span>${u.matricula} Â· ${u.tipo}</span>
+          <span>${u.matricula} · ${u.tipo}</span>
         </span>
         <span class="dropdown__badge ${u.status === "bloqueado" ? "dropdown__badge--emp" : "dropdown__badge--disp"}">
           ${u.status === "bloqueado" ? "Bloqueado" : "Ativo"}
@@ -314,8 +314,9 @@ function initSearchUsuario() {
     document.getElementById("sel-user-av").className   = `selected-user__avatar ${avCor(u.id)}`;
     document.getElementById("sel-user-av").textContent = iniciais(u.nome);
     document.getElementById("sel-user-nome").textContent = u.nome;
-    document.getElementById("sel-user-meta").textContent = `${u.matricula} Â· ${u.tipo}`;
+    document.getElementById("sel-user-meta").textContent = `${u.matricula} · ${u.tipo}`;
     card.hidden = false;
+    card.style.display = "";
     input.closest("p.field").querySelector(".field__error").textContent = "";
   }
 
@@ -327,6 +328,10 @@ function initSearchUsuario() {
     selUsuarioId = null;
     document.getElementById("f-usuario-id").value = "";
     card.hidden = true;
+    card.style.display = "none";
+    document.getElementById("sel-user-av").textContent = "";
+    document.getElementById("sel-user-nome").textContent = "";
+    document.getElementById("sel-user-meta").textContent = "";
     input.value = "";
     input.focus();
   });
@@ -360,10 +365,10 @@ function initSearchLivro() {
         </span>
         <span class="dropdown__info">
           <strong>${l.titulo}</strong>
-          <span>${l.autor} Â· ${CAT_NOMES[l.categoria] || l.categoria}</span>
+          <span>${l.autor} · ${CAT_NOMES[l.categoria] || l.categoria}</span>
         </span>
         <span class="dropdown__badge ${l.status === "disponivel" ? "dropdown__badge--disp" : "dropdown__badge--emp"}">
-          ${l.status === "disponivel" ? "DisponÃ­vel" : "Emprestado"}
+          ${l.status === "disponivel" ? "Disponível" : "Emprestado"}
         </span>
       </li>`).join("");
 
@@ -397,6 +402,7 @@ function initSearchLivro() {
     document.getElementById("sel-book-autor").textContent  = l.autor;
     document.getElementById("sel-book-cat").textContent    = CAT_NOMES[l.categoria] || l.categoria;
     card.hidden = false;
+    card.style.display = "";
     input.closest("p.field").querySelector(".field__error").textContent = "";
   }
 
@@ -408,6 +414,11 @@ function initSearchLivro() {
     selLivroId = null;
     document.getElementById("f-livro-id").value = "";
     card.hidden = true;
+    card.style.display = "none";
+    document.getElementById("sel-book-cover").textContent = "";
+    document.getElementById("sel-book-titulo").textContent = "";
+    document.getElementById("sel-book-autor").textContent = "";
+    document.getElementById("sel-book-cat").textContent = "";
     input.value = "";
     input.focus();
   });
@@ -441,7 +452,7 @@ function initForm() {
 
     
     if (!selUsuarioId) {
-      document.querySelector("#f-usuario").closest("p.field").querySelector(".field__error").textContent = "Selecione um usuÃ¡rio.";
+      document.querySelector("#f-usuario").closest("p.field").querySelector(".field__error").textContent = "Selecione um usuário.";
       valido = false;
     }
     
@@ -451,15 +462,15 @@ function initForm() {
     }
     
     if (!dataEmp.value) {
-      dataEmp.closest("p.field").querySelector(".field__error").textContent = "Informe a data de emprÃ©stimo.";
+      dataEmp.closest("p.field").querySelector(".field__error").textContent = "Informe a data de empréstimo.";
       valido = false;
     }
     if (!dataDev.value) {
-      dataDev.closest("p.field").querySelector(".field__error").textContent = "Informe a data de devoluÃ§Ã£o.";
+      dataDev.closest("p.field").querySelector(".field__error").textContent = "Informe a data de devolução.";
       valido = false;
     }
     if (dataEmp.value && dataDev.value && dataDev.value <= dataEmp.value) {
-      dataDev.closest("p.field").querySelector(".field__error").textContent = "A devoluÃ§Ã£o deve ser apÃ³s o emprÃ©stimo.";
+      dataDev.closest("p.field").querySelector(".field__error").textContent = "A devolução deve ser após o empréstimo.";
       valido = false;
     }
     if (!valido) return;
@@ -481,7 +492,7 @@ function initForm() {
     renderLista();
     renderCalendario();
     atualizarMetricas();
-    mostrarToast("EmprÃ©stimo registrado com sucesso!");
+    mostrarToast("Empréstimo registrado com sucesso!");
   });
 }
 
@@ -493,6 +504,8 @@ function resetForm() {
   document.getElementById("f-livro-id").value   = "";
   document.getElementById("selected-user").hidden = true;
   document.getElementById("selected-book").hidden = true;
+  document.getElementById("selected-user").style.display = "none";
+  document.getElementById("selected-book").style.display = "none";
   document.getElementById("f-usuario").value = "";
   document.getElementById("f-livro").value   = "";
   document.getElementById("prazo-preview").hidden = true;
@@ -537,7 +550,7 @@ function renderLista() {
     const l   = getLivro(e.livroId);
     const st  = e.status === "emprestado" ? "ativo" : e.status;
     const cor = l ? coverHex(l.id) : "#7c3aed";
-    const emo = l ? coverEmoji(l.id) : "ðŸ“š";
+    const emo = l ? coverEmoji(l.id) : "📚";
 
     return `
       <li class="emp-item emp-item--${st}" data-id="${e.id}">
@@ -545,9 +558,9 @@ function renderLista() {
               style="background:${cor}22;color:${cor}">${emo}</span>
         <span class="emp-item__info">
           <p class="emp-item__book">${l ? l.titulo : "Livro removido"}</p>
-          <p class="emp-item__user">${u ? u.nome : "UsuÃ¡rio removido"}</p>
+          <p class="emp-item__user">${u ? u.nome : "Usuário removido"}</p>
           <p class="emp-item__dates">
-            ðŸ“… ${fmtData(e.dataEmp)} â†’ ðŸ“† ${fmtData(e.dataDev)}
+            📅 ${fmtData(e.dataEmp)} → 📆 ${fmtData(e.dataDev)}
           </p>
         </span>
         <span class="emp-item__status emp-item__status--${st}">
@@ -556,10 +569,10 @@ function renderLista() {
         <span class="emp-item__actions">
           <button type="button" class="btn-icon"
                   onclick="abrirEdicao(${e.id})"
-                  aria-label="Editar emprÃ©stimo">âœï¸</button>
+                  aria-label="Editar empréstimo">✏️</button>
           <button type="button" class="btn-icon btn-icon--del"
                   onclick="abrirExcluir(${e.id})"
-                  aria-label="Excluir emprÃ©stimo">ðŸ—‘</button>
+                  aria-label="Excluir empréstimo">🗑</button>
         </span>
       </li>`;
   }).join("");
@@ -617,7 +630,7 @@ function initModal() {
 
     modal.close(); editandoId = null;
     renderLista(); renderCalendario(); atualizarMetricas();
-    mostrarToast("EmprÃ©stimo atualizado com sucesso!");
+    mostrarToast("Empréstimo atualizado com sucesso!");
   });
 }
 
@@ -644,7 +657,7 @@ function initModalExcluir() {
     emprestimos = emprestimos.filter(x => x.id !== excluindoId);
     modalExcluir.close(); excluindoId = null;
     renderLista(); renderCalendario(); atualizarMetricas();
-    mostrarToast("EmprÃ©stimo excluÃ­do.", "warn");
+    mostrarToast("Empréstimo excluído.", "warn");
   });
 }
 
@@ -658,9 +671,9 @@ function mostrarToast(msg, tipo = "success") {
   toast.classList.remove("toast--error","toast--warn");
   iconEl.style.background = "";
 
-  if (tipo === "error") { toast.classList.add("toast--error"); iconEl.textContent = "âœ•"; }
-  else if (tipo === "warn") { toast.classList.add("toast--warn"); iconEl.textContent = "âš "; }
-  else { iconEl.textContent = "âœ“"; }
+  if (tipo === "error") { toast.classList.add("toast--error"); iconEl.textContent = "✕"; }
+  else if (tipo === "warn") { toast.classList.add("toast--warn"); iconEl.textContent = "⚠"; }
+  else { iconEl.textContent = "✓"; }
 
   msgEl.textContent = msg;
   toast.hidden = false;
@@ -742,13 +755,13 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault(); e.stopImmediatePropagation(); if (!selUsuarioId || !selLivroId) return;
     const dataEmprestimo = document.getElementById("f-data-emp").value || isoHoje();
     const dataPrevistaDevolucao = document.getElementById("f-data-dev").value;
-    try { const resp = await fetch(EMPRESTIMOS_API + "?usuarioId=" + selUsuarioId + "&livroId=" + selLivroId + "&dataEmprestimo=" + encodeURIComponent(dataEmprestimo) + "&dataPrevistaDevolucao=" + encodeURIComponent(dataPrevistaDevolucao), { method:"POST" }); if (!resp.ok) throw new Error(await resp.text()); resetForm(); await carregarEmprestimosApi(); mostrarToast("EmprÃ©stimo registrado com sucesso!"); }
-    catch (erro) { mostrarToast("Erro ao registrar emprestimo no banco de dados.", "error"); }
+    try { const resp = await fetch(EMPRESTIMOS_API + "?usuarioId=" + selUsuarioId + "&livroId=" + selLivroId + "&dataEmprestimo=" + encodeURIComponent(dataEmprestimo) + "&dataPrevistaDevolucao=" + encodeURIComponent(dataPrevistaDevolucao), { method:"POST" }); if (!resp.ok) throw new Error(await resp.text()); resetForm(); await carregarEmprestimosApi(); mostrarToast("Empréstimo registrado com sucesso!"); }
+    catch (erro) { mostrarToast("Erro ao registrar empréstimo no banco de dados.", "error"); }
   }, true);
   document.getElementById("excluir-confirmar")?.addEventListener("click", async e => {
     e.preventDefault(); e.stopImmediatePropagation(); if (!excluindoId) return;
-    try { const resp = await fetch(EMPRESTIMOS_API + "/" + excluindoId, { method:"DELETE" }); if (!resp.ok) throw new Error(await resp.text()); modalExcluir.close(); excluindoId = null; await carregarEmprestimosApi(); mostrarToast("EmprÃ©stimo excluÃ­do.", "warn"); }
-    catch (erro) { mostrarToast("Erro ao excluir emprestimo do banco de dados.", "error"); }
+    try { const resp = await fetch(EMPRESTIMOS_API + "/" + excluindoId, { method:"DELETE" }); if (!resp.ok) throw new Error(await resp.text()); modalExcluir.close(); excluindoId = null; await carregarEmprestimosApi(); mostrarToast("Empréstimo excluído.", "warn"); }
+    catch (erro) { mostrarToast("Erro ao excluir empréstimo do banco de dados.", "error"); }
   }, true);
 });
 
@@ -781,9 +794,9 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.close();
       editandoId = null;
       await carregarEmprestimosApi();
-      mostrarToast("EmprÃ©stimo atualizado com sucesso!");
+      mostrarToast("Empréstimo atualizado com sucesso!");
     } catch (erro) {
-      mostrarToast("Erro ao atualizar emprÃ©stimo no banco de dados.", "error");
+      mostrarToast("Erro ao atualizar empréstimo no banco de dados.", "error");
     }
   }, true);
 });
@@ -823,9 +836,9 @@ function atualizarCardUsuarioLogado() {
     const nomeEl = card.querySelector(".user-card__name") || card.querySelector(".user-card__info strong") || card.querySelector("strong");
     const emailEl = card.querySelector(".user-card__info span:not(.user-card__avatar)");
 
-    if (nomeEl) nomeEl.textContent = usuario.nome || "Usu?rio";
+    if (nomeEl) nomeEl.textContent = usuario.nome || "Usuário";
     if (emailEl && usuario.email) emailEl.textContent = usuario.email;
-    card.setAttribute("aria-label", "Usu?rio logado: " + (usuario.nome || "Usu?rio"));
+    card.setAttribute("aria-label", "Usuário logado: " + (usuario.nome || "Usuário"));
   });
 }
 

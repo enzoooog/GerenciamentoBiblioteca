@@ -5,11 +5,7 @@ let emprestimos = [];
 
 let termoBuscaDashboard = "";
 
-let alertas = [
-  { classe: "alerta--red",    icon: "⚠️", titulo: "7 multas pendentes",                desc: "Existem multas atrasadas que precisam ser verificadas.", btn: "Ver multas",      href: "multas.html"      },
-  { classe: "alerta--orange", icon: "⏰", titulo: "5 devoluções próximas ao prazo",             desc: "Livros com prazo de devolução excedido.",                btn: "Ver empréstimos", href: "emprestimos.html" },
-  { classe: "alerta--blue",   icon: "ℹ️", titulo: "2 novos usuários cadastrados hoje", desc: "Confira os novos cadastros.",                           btn: "Ver usuários",    href: "usuarios.html"    },
-];
+let alertas = [];
 
 const acoes = [
   { icon: "📚", classe: "acao__icon--purple", label: "Cadastar Livro",      href: "livros.html"      },
@@ -66,7 +62,13 @@ function renderEmprestimos() {
 
 
 function renderAlertas() {
-  document.getElementById("alertas-list").innerHTML = alertas.map(a => `
+  const lista = document.getElementById("alertas-list");
+  if (alertas.length === 0) {
+    lista.innerHTML = "";
+    return;
+  }
+
+  lista.innerHTML = alertas.map(a => `
     <li class="alerta ${a.classe}" role="listitem">
       <div class="alerta__left">
         <span class="alerta__icon" aria-hidden="true">${a.icon}</span>
@@ -192,22 +194,30 @@ function ordenarEmprestimosRecentes(a, b) {
 function atualizarAlertasDashboard(usuariosApi, emprestimosApi) {
   const hoje = hojeIso();
   const clientes = usuariosApi.filter(u => u.tipoUsuario === "CLIENTE");
-  const multasPendentes = emprestimosApi.filter(e => {
+  const emprestimosClientes = emprestimosApi.filter(e => e.usuario?.tipoUsuario === "CLIENTE");
+  const multasPendentes = emprestimosClientes.filter(e => {
     const status = String(e.status || "").toUpperCase();
     const diasAtraso = e.dataPrevistaDevolucao ? diasEntre(e.dataPrevistaDevolucao, hoje) : 0;
-    return status !== "DEVOLVIDO" && diasAtraso > 0;
+    return status !== "DEVOLVIDO" && (diasAtraso > 0 || Number(e.multa || 0) > 0);
   }).length;
-  const devolucoesProximas = emprestimosApi.filter(e => {
+  const devolucoesProximas = emprestimosClientes.filter(e => {
     const status = String(e.status || "").toUpperCase();
     const dias = e.dataPrevistaDevolucao ? diasEntre(hoje, e.dataPrevistaDevolucao) : null;
     return status !== "DEVOLVIDO" && dias !== null && dias >= 0 && dias <= 3;
   }).length;
-  const usuariosHoje = clientes.filter(u => String(dataCadastroUsuario(u)).slice(0, 10) === hoje).length;
+  const usuariosComData = clientes.filter(u => dataCadastroUsuario(u));
+  const usuariosHoje = usuariosComData.filter(u => String(dataCadastroUsuario(u)).slice(0, 10) === hoje).length;
+  const tituloUsuarios = usuariosComData.length > 0
+    ? `${usuariosHoje} novo${usuariosHoje !== 1 ? "s" : ""} usuário${usuariosHoje !== 1 ? "s" : ""} cadastrado${usuariosHoje !== 1 ? "s" : ""} hoje`
+    : `${clientes.length} usuário${clientes.length !== 1 ? "s" : ""} cadastrado${clientes.length !== 1 ? "s" : ""}`;
+  const descUsuarios = usuariosComData.length > 0
+    ? "Confira os novos cadastros."
+    : "Total real de usuários cadastrados no banco.";
 
   alertas = [
     { classe: "alerta--red", icon: "⚠️", titulo: `${multasPendentes} multa${multasPendentes !== 1 ? "s" : ""} pendente${multasPendentes !== 1 ? "s" : ""}`, desc: "Existem multas atrasadas que precisam ser verificadas.", btn: "Ver multas", href: "multas.html" },
     { classe: "alerta--orange", icon: "⏰", titulo: `${devolucoesProximas} devolu${devolucoesProximas === 1 ? "ção próxima" : "ções próximas"} ao prazo`, desc: "Livros com prazo de devolução próximo.", btn: "Ver empréstimos", href: "emprestimos.html" },
-    { classe: "alerta--blue", icon: "ℹ️", titulo: `${usuariosHoje} novo${usuariosHoje !== 1 ? "s" : ""} usuário${usuariosHoje !== 1 ? "s" : ""} cadastrado${usuariosHoje !== 1 ? "s" : ""} hoje`, desc: "Confira os novos cadastros.", btn: "Ver usuários", href: "usuarios.html" },
+    { classe: "alerta--blue", icon: "ℹ️", titulo: tituloUsuarios, desc: descUsuarios, btn: "Ver usuários", href: "usuarios.html" },
   ];
 }
 async function carregarDashboardApi() {
@@ -280,7 +290,7 @@ async function carregarDashboardApi() {
 }
 document.addEventListener("DOMContentLoaded", () => {
   carregarDashboardApi();
-  setInterval(carregarDashboardApi, 10000);
+  setInterval(carregarDashboardApi, 5000);
   window.addEventListener("focus", carregarDashboardApi);
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) carregarDashboardApi();
